@@ -15,7 +15,7 @@ public class ItemHolder : MonoBehaviour
 
     private void Start()
     {
-        _action = input.currentActionMap.FindAction("Interact");
+        _action = input.currentActionMap.FindAction("Attack");
     }
 
     private void Update()
