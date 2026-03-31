@@ -24,5 +24,7 @@ public partial class PlantedCrop
         public virtual void OnEnter() { }
         public virtual void OnExit() { }
 
+        public virtual void TransitionToStage() { }
+
     }
 }

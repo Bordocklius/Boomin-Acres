@@ -12,11 +12,3 @@ public class CropSO : ScriptableObject
     public Sprite CropSprite;
 }
 
-public enum CropStatus
-{
-    None,
-    Planted,
-    NotGrowing,
-    Growing,
-    Grown
-}

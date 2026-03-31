@@ -26,6 +26,11 @@ namespace PD4.FSM
             CurrentStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        public virtual void Update(float deltatime)
+        {
+            CurrentState.Update(deltatime);
+        }
+
         public virtual void FixedUpdate(float fixedDeltaTime)
         {
             CurrentState.FixedUpdate(fixedDeltaTime);
