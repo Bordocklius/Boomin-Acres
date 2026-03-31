@@ -23,16 +23,7 @@ public partial class PlantedCrop : MonoBehaviour
 
     private void Update()
     {
-        _cropFSM.Update(Time.deltaTime);     
-        
-    }
-
-    private void DestroyVisualRoot()
-    {
-        foreach (Transform child in VisualRoot.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        _cropFSM.Update(Time.deltaTime);             
     }
 
     private void InstantiateCropPool()
@@ -51,5 +42,16 @@ public partial class PlantedCrop : MonoBehaviour
         if(stage > 0)
             _cropObjects[stage - 1].SetActive(false);
         _cropObjects[stage].SetActive(true);
+    }
+
+    public void RequestHarvest()
+    {
+        _cropFSM.CurrentState.HarvestCrop();
+    }
+
+    private void Harvest()
+    {
+        CropManager.Instance.AddHarvestedCrop(CropData.name, CropData.CropYield);
+        Debug.Log($"{CropManager.Instance.GetHarvestedCropAmount(CropData.name)}");
     }
 }
