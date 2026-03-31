@@ -4,23 +4,22 @@ using System.Collections.Generic;
 
 public class BoatManager : MonoBehaviour
 {
-    // Een simpele klasse om de naam en de prefab te koppelen
     [System.Serializable]
     public class CropVisuals
     {
-        public string cropName; // Bijv: "Wortel"
-        public GameObject cropPrefab; // Sleep hier PFB_Wortel in
+        public string cropName;
+        public GameObject cropPrefab;
     }
 
     [Header("Movement")]
-    public Transform startPoint; public Transform dockPoint; public Transform exitPoint;
+    public Transform startPoint;
+    public Transform dockPoint;
+    public Transform exitPoint;
     public float speed = 5f;
 
     [Header("Scalable Cargo Visuals")]
-    // Deze lijst vul je in de Inspector
     public List<CropVisuals> allCropVisuals;
 
-    // Een Dictionary om snel de juiste prefab te vinden op basis van de naam
     private Dictionary<string, GameObject> cropPrefabDict = new Dictionary<string, GameObject>();
     private List<string> possibleCrops = new List<string>();
 
@@ -33,7 +32,6 @@ public class BoatManager : MonoBehaviour
     private string currentRequiredCrop;
     private int currentFilledSlots = 0;
     private bool playerInZone = false;
-    private PlayerInventory playerInv;
 
     private enum BoatState { Coming, Waiting, Leaving, Gone }
     [SerializeField] private BoatState currentState = BoatState.Gone;
@@ -44,7 +42,6 @@ public class BoatManager : MonoBehaviour
         StartCoroutine(BoatRoutine());
     }
 
-    // Zet de lijst uit de Inspector om in een snelle Dictionary
     void InitializeCropDictionary()
     {
         cropPrefabDict.Clear();
@@ -55,15 +52,16 @@ public class BoatManager : MonoBehaviour
             if (!cropPrefabDict.ContainsKey(visual.cropName))
             {
                 cropPrefabDict.Add(visual.cropName, visual.cropPrefab);
-                possibleCrops.Add(visual.cropName); // De boot kiest alleen uit ingevulde crops
+                possibleCrops.Add(visual.cropName);
             }
         }
     }
 
-    public void SetPlayerInZone(bool inZone, PlayerInventory inventory = null)
+    // Aangepast: we hebben de CropManager referentie niet meer nodig als parameter
+    // omdat we CropManager.Instance gebruiken.
+    public void SetPlayerInZone(bool inZone)
     {
         playerInZone = inZone;
-        playerInv = inventory;
     }
 
     IEnumerator BoatRoutine()
@@ -75,14 +73,12 @@ public class BoatManager : MonoBehaviour
             transform.position = new Vector3(0, -100, 0);
             yield return new WaitForSeconds(boatRespawnTime);
 
-            // Controleer of we wel crops hebben ingesteld
             if (possibleCrops.Count == 0)
             {
-                Debug.LogError("Oeps! Je hebt geen crops ingevuld in de BoatManager Inspector.");
+                Debug.LogError("Geen crops ingevuld in BoatManager!");
                 yield break;
             }
 
-            // Kies een willekeurig gewas voor deze lading
             currentRequiredCrop = possibleCrops[Random.Range(0, possibleCrops.Count)];
             currentFilledSlots = 0;
             Debug.Log($"NIEUWE BOOT: Wil graag {totalSlots}x {currentRequiredCrop} hebben!");
@@ -100,12 +96,16 @@ public class BoatManager : MonoBehaviour
             currentState = BoatState.Waiting;
             while (currentFilledSlots < totalSlots)
             {
-                if (playerInZone && playerInv != null && playerInv.HasItem(currentRequiredCrop))
+                // Check via de Singleton van CropManager
+                if (playerInZone && CropManager.Instance != null)
                 {
-                    SpawnFlyingItem(); // Deze functie spawnt nu het juiste model
-                    playerInv.RemoveItem(currentRequiredCrop);
-                    currentFilledSlots++;
-                    yield return new WaitForSeconds(timePerItem);
+                    // Gebruik TryRemoveHarvestedCrop van je CropManager
+                    if (CropManager.Instance.TryRemoveHarvestedCrop(currentRequiredCrop, 1))
+                    {
+                        SpawnFlyingItem();
+                        currentFilledSlots++;
+                        yield return new WaitForSeconds(timePerItem);
+                    }
                 }
                 yield return null;
             }
@@ -123,19 +123,11 @@ public class BoatManager : MonoBehaviour
 
     void SpawnFlyingItem()
     {
-        // Zoek de juiste prefab in de Dictionary op basis van de gevraagde crop
         if (cropPrefabDict.TryGetValue(currentRequiredCrop, out GameObject prefabToSpawn))
         {
-            // Spawn het specifieke model (wortel, graan, etc.)
             GameObject item = Instantiate(prefabToSpawn, playerBackpack.position, Quaternion.identity);
-
-            // Plak het vlieg-script erop
             FlyingItem flyer = item.AddComponent<FlyingItem>();
             flyer.StartFlight(playerBackpack, transform, 0.6f);
-        }
-        else
-        {
-            Debug.LogError($"Geen prefab gevonden voor crop: {currentRequiredCrop}. Check je Inspector!");
         }
     }
 
@@ -143,6 +135,7 @@ public class BoatManager : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
         Vector3 dir = (target - transform.position).normalized;
-        if (dir != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 2f);
+        if (dir != Vector3.zero)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 2f);
     }
 }
