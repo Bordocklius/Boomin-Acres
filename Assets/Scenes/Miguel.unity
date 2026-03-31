@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 115237347}
   - component: {fileID: 115237346}
+  - component: {fileID: 115237348}
   m_Layer: 0
   m_Name: CropManager
   m_TagString: Untagged
@@ -150,7 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropManager
   availableCrops:
   - {fileID: 11400000, guid: e88f42dc9816e284bb47cc76529b04e1, type: 2}
-  _maisText: {fileID: 1944826091}
 --- !u!4 &115237347
 Transform:
   m_ObjectHideFlags: 0
@@ -166,6 +166,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &115237348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115237345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74043cb9f0d9c6c4ba2da5e2e3c6037e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CropsUIManager
+  _maisText: {fileID: 1944826091}
 --- !u!1 &204286950
 GameObject:
   m_ObjectHideFlags: 0

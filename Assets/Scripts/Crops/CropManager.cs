@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using System;
 
 public class CropManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class CropManager : MonoBehaviour
     private Dictionary<string, CropSO> cropDictionary;
     private Dictionary<string, int> harvestedCrops;
 
-    public TextMeshProUGUI _maisText;
+    public event Action<string, int> CropHarvested;
 
     private void Awake()
     {
@@ -69,6 +70,7 @@ public class CropManager : MonoBehaviour
         if (harvestedCrops.ContainsKey(cropName))
         {
             harvestedCrops[cropName] += amount;
+            CropHarvested?.Invoke(cropName, harvestedCrops[cropName]);
         }
         else
         {
