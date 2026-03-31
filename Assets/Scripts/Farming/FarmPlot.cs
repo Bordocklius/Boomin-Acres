@@ -15,8 +15,9 @@ public class FarmPlot : MonoBehaviour
         {
             for (int j = 0; j < gridSize.y; j++)
             {
-                Vector3 position = new Vector3(i * farmTiles[0].transform.localScale.x + tileIncrement * i, farmTiles[0].transform.position.y, j * farmTiles[0].transform.localScale.z + tileIncrement * j);
-                Instantiate(farmTiles[0], position, Quaternion.identity);
+                Vector3 position = transform.position + new Vector3(i * farmTiles[0].transform.localScale.x + tileIncrement * i, farmTiles[0].transform.position.y, j * farmTiles[0].transform.localScale.z + tileIncrement * j);
+                GameObject tile =  Instantiate(farmTiles[0], position, Quaternion.identity);
+                tile.transform.SetParent(transform, true);
             }
         }
     }
