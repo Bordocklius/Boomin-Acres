@@ -11,17 +11,20 @@ public partial class PlantedCrop : MonoBehaviour
     public Transform VisualRoot;
 
     private float _timeSpentGrowing;
+    private List<GameObject> _cropObjects;
 
     private CropFSM _cropFSM;
 
-    private void Awake()
+    private void Start()
     {
+        InstantiateCropPool();
         _cropFSM = new CropFSM(this);
     }
 
     private void Update()
     {
-        _cropFSM.Update(Time.deltaTime);
+        _cropFSM.Update(Time.deltaTime);     
+        
     }
 
     private void DestroyVisualRoot()
@@ -32,9 +35,21 @@ public partial class PlantedCrop : MonoBehaviour
         }
     }
 
+    private void InstantiateCropPool()
+    {
+        _cropObjects = new List<GameObject>(CropData.GameObjects.Count);
+        foreach(GameObject obj in CropData.GameObjects)
+        {
+            GameObject crop = Instantiate(obj, VisualRoot);
+            crop.SetActive(false);
+            _cropObjects.Add(crop);
+        }
+    }
+
     public void TransitionToStage(int stage)
     {
-        DestroyVisualRoot();
-        Instantiate(CropData.GameObjects[stage], VisualRoot);
+        if(stage > 0)
+            _cropObjects[stage - 1].SetActive(false);
+        _cropObjects[stage].SetActive(true);
     }
 }
