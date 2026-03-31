@@ -1,14 +1,7 @@
 fileFormatVersion: 2
-guid: bd00ad35c541eaa44874dde41f3bea90
+guid: 9a10d158d03662542b4bde885266663b
 PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 304714
-  packageName: Stylized Tree & Grass Samples
-  packageVersion: 1.2
-  assetPath: Assets/Prefabs/Environment/tree.prefab
-  uploadId: 877316
