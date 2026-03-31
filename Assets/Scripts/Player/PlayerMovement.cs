@@ -20,9 +20,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (_movementAction == null) return;
+
         Vector2 newInput = _movementAction.ReadValue<Vector2>();
         Vector3 moveVelocity = new Vector3(newInput.x, 0f, newInput.y) * playerSpeed;
-        controller.Move(moveVelocity * Time.deltaTime);
 
         // Rotate to face movement direction
         if (moveVelocity.magnitude > 0.01f) // Only if actually moving
@@ -30,5 +30,12 @@ public class PlayerMovement : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(moveVelocity, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+
+        if (!controller.isGrounded)
+        {
+            moveVelocity += Physics.gravity;
+        }
+
+        controller.Move(moveVelocity * Time.deltaTime);
     }
 }
