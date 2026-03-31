@@ -19,3 +19,4 @@ MonoBehaviour:
   - {fileID: 1694239748020088630, guid: 49f11f6c07651fb4ab7652bafa7bd077, type: 3}
   GrowthTime: 20
   CropSprite: {fileID: 0}
+  CropYield: 2
