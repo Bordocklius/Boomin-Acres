@@ -20,17 +20,17 @@ public class TEMP_FarmTester : MonoBehaviour
     {
         if (_plow.WasPressedThisFrame())
         {
-            StartCoroutine(tile.Plowing());
+            tile.PlowPlot();
         }
 
         if (_water.WasPressedThisFrame())
         {
-            StartCoroutine(tile.Watering());
+            tile.WaterPlot();
         }
 
         if (_harvest.WasPressedThisFrame())
         {
-            StartCoroutine(tile.Harvesting());
+            tile.ResetPlot();
         }
     }
 }

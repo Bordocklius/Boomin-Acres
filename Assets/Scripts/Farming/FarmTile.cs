@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class FarmTile : MonoBehaviour
@@ -19,31 +18,40 @@ public class FarmTile : MonoBehaviour
         IsWatered = false;
         IsReadyToHarvest = false;
     }
-
+    /*
     public IEnumerator Plowing()
     {
-        if (IsPlowed)
+        if (FarmState != TileState.Barren)
         {
-            Debug.Log("Already plowed");
+            Debug.Log("Not barren");
             yield break;
         }
 
         yield return new WaitForSeconds(plowingTime);
         IsPlowed = true;
         renderer.material = materialStates[1];
+        FarmState = TileState.Plowed;
+    }
+
+    public IEnumerator Planting()
+    {
+        if (FarmState != TileState.Plowed)
+        {
+            Debug.Log("not plowed");
+            yield break;
+        }
+
+        yield return new WaitForSeconds(plowingTime);
+        IsPlowed = true;
+        renderer.material = materialStates[1];
+        FarmState = TileState.Plowed;
     }
 
     public IEnumerator Watering()
     {
-        if (!IsPlowed)
+        if (FarmState != TileState.Plowed)
         {
-            Debug.Log("Plow first!");
-            yield break;
-        }
-
-        if (IsWatered)
-        {
-            Debug.Log("Already watered");
+            Debug.Log("not planted");
             yield break;
         }
 
@@ -51,11 +59,12 @@ public class FarmTile : MonoBehaviour
         IsWatered = true;
         IsReadyToHarvest = true;
         renderer.material = materialStates[2];
+        FarmState = TileState.Watered;
     }
 
     public IEnumerator Harvesting()
     {
-        if (!IsReadyToHarvest)
+        if (FarmState != TileState.Watered)
         {
             Debug.Log("Crop needs to grow first!");
             yield break;
@@ -66,6 +75,26 @@ public class FarmTile : MonoBehaviour
         IsPlowed = false;
         IsWatered = false;
         IsReadyToHarvest= false;
+        renderer.material = materialStates[0];
+    }
+    */
+
+    public void PlowPlot()
+    {
+        IsPlowed = true;
+        renderer.material = materialStates[1];
+    }
+
+    public void WaterPlot()
+    {
+        IsWatered = true;
+        renderer.material = materialStates[2];
+    }
+
+    public void ResetPlot()
+    {
+        IsPlowed = false;
+        IsWatered = false;
         renderer.material = materialStates[0];
     }
 }
