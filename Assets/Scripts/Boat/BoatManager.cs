@@ -1,125 +1,88 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections;
 
 public class BoatManager : MonoBehaviour
 {
-    [Header("Movement Points")]
+    [Header("Movement")]
     public Transform startPoint;
     public Transform dockPoint;
     public Transform exitPoint;
-
-    [Header("Settings")]
     public float speed = 5f;
-    public float respawnDelay = 5f;
-    public float interactionDistance = 3f; // Hoe dichtbij moet de speler zijn?
 
-    [Header("UI Reference")]
-    public GameObject boatMenuPanel; // Sleep hier je Panel in
-    public Transform playerTransform; // Sleep hier je Player in
+    [Header("Filling Logic")]
+    public int totalSlots = 6;
+    public float timePerItem = 1.0f; // Snelheid van vullen
+    [SerializeField] private int currentFilledSlots = 0;
 
+    private bool playerInZone = false;
     private enum BoatState { Coming, Waiting, Leaving, Gone }
-    [SerializeField] private BoatState currentState = BoatState.Gone;
-    private bool goodsAreFilled = false;
+    private BoatState currentState = BoatState.Gone;
 
     void Start()
     {
-        boatMenuPanel.SetActive(false);
         StartCoroutine(BoatRoutine());
     }
 
-    void Update()
+    // Deze functies worden aangeroepen als de speler de cirkel op de pier raakt
+    // Zorg dat de cirkel de tag "FillZone" heeft of dit script op de cirkel staat
+    public void SetPlayerInZone(bool inZone)
     {
-        // We checken alleen voor input als de boot bij het dok ligt
-        if (currentState == BoatState.Waiting)
-        {
-            float distance = Vector3.Distance(transform.position, playerTransform.position);
-
-            if (distance <= interactionDistance && Keyboard.current.eKey.wasPressedThisFrame)
-            {
-                // Als het menu al open is, sluit het. Anders, open het.
-                if (boatMenuPanel.activeSelf)
-                {
-                    CloseBoatMenu();
-                }
-                else
-                {
-                    OpenBoatMenu();
-                }
-            }
-        }
-    }
-
-    void OpenBoatMenu()
-    {
-        boatMenuPanel.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    void CloseBoatMenu()
-    {
-        boatMenuPanel.SetActive(false);
-        // Zet de cursor weer vast voor de speler
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    // Deze functie blijft voor je UI Button
-    public void FillGoodsAndSend()
-    {
-        goodsAreFilled = true;
-        CloseBoatMenu(); // Gebruik de nieuwe sluit-functie
-        currentState = BoatState.Leaving;
+        playerInZone = inZone;
+        if (inZone) Debug.Log("Laden gestart...");
+        else Debug.Log("Laden gestopt: Speler is uit de cirkel.");
     }
 
     IEnumerator BoatRoutine()
     {
         while (true)
         {
-            // 1. SPAWN
+            // 1. SPAWN & VAAR NAAR PIER
             transform.position = startPoint.position;
-            goodsAreFilled = false;
+            currentFilledSlots = 0;
             currentState = BoatState.Coming;
 
-            // 2. VAAR NAAR DOK
-            while (Vector3.Distance(transform.position, dockPoint.position) > 0.2f)
+            while (Vector3.Distance(transform.position, dockPoint.position) > 0.1f)
             {
                 MoveBoat(dockPoint.position);
                 yield return null;
             }
 
-            transform.position = dockPoint.position;
+            // 2. WACHTEN BIJ PIER
             currentState = BoatState.Waiting;
+            Debug.Log("Boot ligt klaar. Stap in de cirkel!");
 
-            // 3. WACHT TOT DE STATE VERANDERT (door de UI knop)
-            while (currentState == BoatState.Waiting)
+            while (currentFilledSlots < totalSlots)
             {
+                if (playerInZone)
+                {
+                    yield return new WaitForSeconds(timePerItem);
+                    currentFilledSlots++;
+                    Debug.Log($"Item {currentFilledSlots}/{totalSlots} geladen!");
+                }
                 yield return null;
             }
 
-            // 4. VERTREKKEN
-            while (Vector3.Distance(transform.position, exitPoint.position) > 0.2f)
+            // 3. VERTREKKEN
+            Debug.Log("Boot is vol! Tot ziens.");
+            currentState = BoatState.Leaving;
+
+            while (Vector3.Distance(transform.position, exitPoint.position) > 0.1f)
             {
                 MoveBoat(exitPoint.position);
                 yield return null;
             }
 
-            // 5. DESPAWN
+            // 4. DESPAWN & COOLDOWN
             currentState = BoatState.Gone;
-            transform.position = new Vector3(0, -50, 0);
-
-            yield return new WaitForSeconds(respawnDelay);
+            transform.position = new Vector3(0, -100, 0);
+            yield return new WaitForSeconds(20f);
         }
     }
 
     void MoveBoat(Vector3 target)
     {
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        Vector3 direction = (target - transform.position).normalized;
-        if (direction != Vector3.zero)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 2f);
-        }
+        Vector3 dir = (target - transform.position).normalized;
+        if (dir != Vector3.zero) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 2f);
     }
 }
