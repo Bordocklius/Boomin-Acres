@@ -1,6 +1,7 @@
-using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public enum InteractionMode
 {
@@ -20,13 +21,38 @@ public class FarmInteraction : MonoBehaviour
 
     private InputAction _action;
 
-    private bool HasPressed;
-    private bool held;
+    private FarmTile _tile;
     private float _holdTimer;
+    private bool held;
 
     private void Start()
     {
         _action = input.currentActionMap.FindAction("Interact");
+    }
+
+    //detecting tiles
+    private void FixedUpdate()
+    {
+        Ray ray = new Ray(transform.position - transform.up, -transform.up);
+        Debug.DrawRay(transform.position - transform.up, -transform.up, Color.red);
+        if (Physics.Raycast(ray, out RaycastHit hit, .1f))
+        {
+            if (hit.transform.tag == "Tile")
+            {
+                if (_tile == null)
+                {
+                    Debug.Log("new tile");
+                    _tile = hit.transform.gameObject.GetComponent<FarmTile>();
+                    return;
+                }
+                else if (hit.transform.gameObject.GetComponent<FarmTile>() != _tile)
+                {
+                    _tile = hit.transform.gameObject.GetComponent<FarmTile>();
+                    Debug.Log("replaced tile"); 
+                }
+            }
+        }
+        else _tile = null;
     }
 
     void Update()
@@ -39,26 +65,51 @@ public class FarmInteraction : MonoBehaviour
             _holdTimer += Time.deltaTime;
         }
 
-        switch (Mode)
+        //determine what action is used
+        if (_tile != null)
         {
-            case InteractionMode.Idle:
-                break;
-            case InteractionMode.Plowing:
-                Plowing();
-                break;
-            case InteractionMode.Planting:
-                Planting();
-                break;
-            case InteractionMode.Watering:
-                Watering();
-                break;
-            case InteractionMode.Harvesting:
-                Harvesting();
-                break;
+            switch (Mode)
+            {
+                case InteractionMode.Idle:
+                    break;
+                case InteractionMode.Plowing:
+                    Plowing();
+                    break;
+                case InteractionMode.Planting:
+                    Planting();
+                    break;
+                case InteractionMode.Watering:
+                    Watering();
+                    break;
+                case InteractionMode.Harvesting:
+                    Harvesting();
+                    break;
+            }
         }
     }
 
     void Plowing()
+    {
+        if (held && _holdTimer >= holdInterval)
+        {
+            Debug.Log("p1");
+            _tile.PlowPlot();
+            return;
+        }
+
+        if (_action.WasReleasedThisFrame())
+        {
+            if (_holdTimer < holdInterval)
+            {
+                Debug.Log("p2");
+                _tile.PlowPlot();
+            }
+            _holdTimer = 0;
+            return;
+        }
+    }
+
+    void Planting()
     {
         if (held && _holdTimer >= holdInterval)
         {
@@ -77,18 +128,45 @@ public class FarmInteraction : MonoBehaviour
         }
     }
 
-    void Planting()
-    {
-        Debug.Log("no");
-    }
-
     void Watering()
     {
-        Debug.Log("no");
+        if (held && _holdTimer >= holdInterval)
+        {
+            Debug.Log("w1");
+            _tile.WaterPlot();
+            return;
+        }
+
+        if (_action.WasReleasedThisFrame())
+        {
+            if (_holdTimer < holdInterval)
+            {
+                Debug.Log("w2");
+                _tile.WaterPlot();
+            }
+            _holdTimer = 0;
+            return;
+        }
     }
 
     void Harvesting()
     {
-        Debug.Log("no");
+        if (held && _holdTimer >= holdInterval)
+        {
+            Debug.Log("h1");
+            _tile.ResetPlot();
+            return;
+        }
+
+        if (_action.WasReleasedThisFrame())
+        {
+            if (_holdTimer < holdInterval)
+            {
+                Debug.Log("h2");
+                _tile.ResetPlot();
+            }
+            _holdTimer = 0;
+            return;
+        }
     }
 }
