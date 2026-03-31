@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class CropManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CropManager : MonoBehaviour
 
     private Dictionary<string, CropSO> cropDictionary;
     private Dictionary<string, int> harvestedCrops;
+
+    public TextMeshProUGUI _maisText;
 
     private void Awake()
     {

@@ -52,6 +52,6 @@ public partial class PlantedCrop : MonoBehaviour
     private void Harvest()
     {
         CropManager.Instance.AddHarvestedCrop(CropData.name, CropData.CropYield);
-        Debug.Log($"{CropManager.Instance.GetHarvestedCropAmount(CropData.name)}");
+        CropManager.Instance._maisText.text = $"Mais: {CropManager.Instance.GetHarvestedCropAmount(CropData.name)}";
     }
 }
