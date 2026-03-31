@@ -12,6 +12,7 @@ public class ItemHolder : MonoBehaviour
 
     private GameObject _tool;
     private bool IsHoldingItem;
+    private SeedIdentifier _heldSeedIdentifier;
 
     private void Start()
     {
@@ -60,6 +61,7 @@ public class ItemHolder : MonoBehaviour
                     break;
                 case "Seed":
                     FarmInteraction.Mode = InteractionMode.Planting;
+                    _heldSeedIdentifier = _tool.GetComponent<SeedIdentifier>();
                     break;
                 case "Water":
                     FarmInteraction.Mode = InteractionMode.Watering;
@@ -75,10 +77,16 @@ public class ItemHolder : MonoBehaviour
         {
             _tool.transform.parent = null;
             _tool.GetComponent<Rigidbody>().isKinematic = false;
-            _tool.GetComponent <Rigidbody>().AddForce(transform.forward + transform.up * 2, ForceMode.Impulse);
+            _tool.GetComponent<Rigidbody>().AddForce(transform.forward + transform.up * 2, ForceMode.Impulse);
             _tool = null;
+            _heldSeedIdentifier = null;
             FarmInteraction.Mode = InteractionMode.Idle;
             IsHoldingItem = false;
         }
+    }
+
+    public SeedIdentifier GetHeldSeedIdentifier()
+    {
+        return _heldSeedIdentifier;
     }
 }

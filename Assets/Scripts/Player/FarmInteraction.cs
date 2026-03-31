@@ -10,7 +10,7 @@ public enum InteractionMode
     Planting,
     Watering,
     Harvesting
-}
+}   
 
 public class FarmInteraction : MonoBehaviour
 {
@@ -20,6 +20,7 @@ public class FarmInteraction : MonoBehaviour
     public InteractionMode Mode = InteractionMode.Idle;
 
     private InputAction _action;
+    private ItemHolder _itemHolder;
 
     private FarmTile _tile;
     private float _holdTimer;
@@ -28,6 +29,7 @@ public class FarmInteraction : MonoBehaviour
     private void Start()
     {
         _action = input.currentActionMap.FindAction("Interact");
+        _itemHolder = GetComponent<ItemHolder>();
     }
 
     //detecting tiles
@@ -113,7 +115,16 @@ public class FarmInteraction : MonoBehaviour
     {
         if (held && _holdTimer >= holdInterval)
         {
-            Debug.Log("MultiPlowing");
+            SeedIdentifier seedIdentifier = _itemHolder.GetHeldSeedIdentifier();
+            if (seedIdentifier != null)
+            {
+                CropSO cropData = CropManager.Instance.GetCropByName(seedIdentifier.CropName);
+                if (cropData != null)
+                {
+                    _tile.PlantPlot(cropData);
+                    Debug.Log($"Planted {seedIdentifier.CropName}");
+                }
+            }
             return;
         }
 
@@ -121,7 +132,16 @@ public class FarmInteraction : MonoBehaviour
         {
             if (_holdTimer < holdInterval)
             {
-                Debug.Log("SoloPlowing");
+                SeedIdentifier seedIdentifier = _itemHolder.GetHeldSeedIdentifier();
+                if (seedIdentifier != null)
+                {
+                    CropSO cropData = CropManager.Instance.GetCropByName(seedIdentifier.CropName);
+                    if (cropData != null)
+                    {
+                        _tile.PlantPlot(cropData);
+                        Debug.Log($"Planted {seedIdentifier.CropName}");
+                    }
+                }
             }
             _holdTimer = 0;
             return;

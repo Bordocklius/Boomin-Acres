@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3502567978439848242}
   - component: {fileID: 7874367046253117262}
   - component: {fileID: 5943260755233769079}
+  - component: {fileID: -1856641510514131604}
   m_Layer: 3
   m_Name: Seed
   m_TagString: Seed
@@ -140,3 +141,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1856641510514131604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578461455946536825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e22dbbb53c3fe47b72af0d3518e40e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeedIdentifier
+  cropName: Mais
