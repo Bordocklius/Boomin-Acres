@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad7b6a101ebc62e44baa56be5138e0c9, type: 2}
+  - {fileID: 2100000, guid: 53c7115566cfdee428f6a475be451bac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,9 +126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmTile
   materialStates:
-  - {fileID: 2100000, guid: ad7b6a101ebc62e44baa56be5138e0c9, type: 2}
-  - {fileID: 2100000, guid: 3f3322fcdbcb59e4c896833064292fb8, type: 2}
-  - {fileID: 2100000, guid: 2936030c2ddfce3488dec99822026e47, type: 2}
+  - {fileID: 2100000, guid: 53c7115566cfdee428f6a475be451bac, type: 2}
+  - {fileID: 2100000, guid: ec2d7dea99cfda542adeab47e5aa8691, type: 2}
+  - {fileID: 2100000, guid: 708757a211ff065438353e41eac3fdb2, type: 2}
   plowingTime: 3
   wateringTime: 3
   harvestingTime: 3
