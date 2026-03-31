@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropSO
   CropName: Mais
   GameObjects:
-  - {fileID: 4581237716113315545, guid: 1857a5089a0607b4f94d38fb29b30352, type: 3}
-  - {fileID: 4659294574033131225, guid: 08d5b44c32e2af64bbb353dd234ad8a7, type: 3}
-  - {fileID: 1694239748020088630, guid: 49f11f6c07651fb4ab7652bafa7bd077, type: 3}
+  - {fileID: 8034587939906334398, guid: d6e1dbe1cf6fdb74ebf36afc510beaa1, type: 3}
+  - {fileID: 8024688971262522664, guid: 07567fcca6618e6419ab666bb63a8d6f, type: 3}
+  - {fileID: 6506651458253822616, guid: ac6838c5083a62345947beb36b25a93e, type: 3}
   GrowthTime: 20
   CropSprite: {fileID: 0}
-  CropYield: 2
+  ResultCrop: {fileID: 3986719047322993311, guid: 2c03d0cf5a2c2a7479f7579681214d60, type: 3}
+  CropYieldMin: 2
+  CropYieldMax: 6

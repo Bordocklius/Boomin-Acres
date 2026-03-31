@@ -10,6 +10,9 @@ public class CropSO : ScriptableObject
     public List<GameObject> GameObjects;
     public float GrowthTime;
     public Sprite CropSprite;
-    public int CropYield;
+
+    public GameObject ResultCrop;
+    public int CropYieldMin;
+    public int CropYieldMax;
 }
 

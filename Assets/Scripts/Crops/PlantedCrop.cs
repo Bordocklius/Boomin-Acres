@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 
 public partial class PlantedCrop : MonoBehaviour
@@ -51,6 +52,7 @@ public partial class PlantedCrop : MonoBehaviour
 
     private void Harvest()
     {
-        CropManager.Instance.AddHarvestedCrop(CropData.name, CropData.CropYield);
+        int cropyield = UnityEngine.Random.Range(CropData.CropYieldMin, CropData.CropYieldMax);
+        CropManager.Instance.AddHarvestedCrop(CropData.name, cropyield);
     }
 }
