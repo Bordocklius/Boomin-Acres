@@ -12,7 +12,7 @@ public partial class PlantedCrop
 
         public override void Update(float deltaTime)
         {
-            Context._timeSpentGrowing += deltaTime;
+            Context._timeSpentGrowing += deltaTime * Context.GrowthMultiplier;
             if(Context._timeSpentGrowing > Context.CropData.GrowthTime)
             {
                 FSM.TransitionTo(FSM.CropGrownState);

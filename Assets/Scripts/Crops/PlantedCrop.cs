@@ -8,8 +8,11 @@ using UnityEngine;
 
 public partial class PlantedCrop : MonoBehaviour
 {
+    public FarmTile ParentFarmTile;
     public CropSO CropData;
     public Transform VisualRoot;
+
+    public float GrowthMultiplier = 1f;
 
     private float _timeSpentGrowing;
     private List<GameObject> _cropObjects;
@@ -20,11 +23,35 @@ public partial class PlantedCrop : MonoBehaviour
     {
         InstantiateCropPool();
         _cropFSM = new CropFSM(this);
+
+        if (ParentFarmTile == null)
+            ParentFarmTile = GetComponentInParent<FarmTile>();
+
+        SubscribeToFarmTile();
+        
     }
 
     private void Update()
     {
         _cropFSM.Update(Time.deltaTime);             
+    }
+
+    private void OnDestroy()
+    {
+        if (ParentFarmTile != null)
+        {
+            UnsubscribeFromFarmTileEvents();
+        }
+    }
+
+    private void SubscribeToFarmTile()
+    {
+        ParentFarmTile.WaterSwitched += ParentFarmTile_WaterSwitched;
+    }   
+
+    private void UnsubscribeFromFarmTileEvents()
+    {
+        ParentFarmTile.WaterSwitched -= ParentFarmTile_WaterSwitched;
     }
 
     private void InstantiateCropPool()
@@ -54,5 +81,20 @@ public partial class PlantedCrop : MonoBehaviour
     {
         int cropyield = UnityEngine.Random.Range(CropData.CropYieldMin, CropData.CropYieldMax);
         CropManager.Instance.AddHarvestedCrop(CropData.name, cropyield);
+    }
+
+    private void ParentFarmTile_WaterSwitched(object sender, EventArgs e)
+    {
+        if (GrowthMultiplier == 1f)
+        {
+            GrowthMultiplier = 0.5f;
+        }
+
+        if (GrowthMultiplier == 0.5f)
+        {
+            GrowthMultiplier = 1f;
+        }
+
+        
     }
 }
