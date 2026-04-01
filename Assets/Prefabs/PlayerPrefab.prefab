@@ -440,6 +440,7 @@ MonoBehaviour:
   playerSpeed: 5
   rotationSpeed: 20
   _movementParticles: {fileID: 6445500224794954213}
+  _animator: {fileID: 5556594745519598178}
   Bombed: 0
   IsPerformingAction: 0
 --- !u!114 &8442996834669274620
@@ -973,6 +974,11 @@ PrefabInstance:
 --- !u!4 &2016717285288488984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
+  m_PrefabInstance: {fileID: 2050941935304038387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &5556594745519598178 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
   m_PrefabInstance: {fileID: 2050941935304038387}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &8845562023367079950 stripped
