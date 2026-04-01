@@ -8,8 +8,7 @@ public class ZoneTrigger : MonoBehaviour
     {
         
         if (other.CompareTag("Player"))
-        {
-            
+        {            
             boatManager.SetPlayerInZone(true);
         }
     }
