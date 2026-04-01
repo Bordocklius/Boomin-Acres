@@ -118,6 +118,7 @@ public class FarmInteraction : MonoBehaviour
 
     void Planting()
     {
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             SeedIdentifier seedIdentifier = _itemHolder.GetHeldSeedIdentifier();
@@ -130,6 +131,7 @@ public class FarmInteraction : MonoBehaviour
                     Debug.Log($"Planted {seedIdentifier.CropName}");
                 }
             }
+            _holdTimer = 0;
             return;
         }
 
@@ -148,16 +150,20 @@ public class FarmInteraction : MonoBehaviour
                     }
                 }
             }
+            _holdTimer = 0;
             return;
         }
+        _holdTimer += Time.deltaTime;
     }
 
     void Watering()
     {
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             Debug.Log("w1");
             _tile.WaterPlot();
+            _holdTimer = 0;
             return;
         }
 
@@ -168,12 +174,15 @@ public class FarmInteraction : MonoBehaviour
                 Debug.Log("w2");
                 _tile.WaterPlot();
             }
+            _holdTimer = 0;
             return;
         }
+        _holdTimer += Time.deltaTime;
     }
 
     void Harvesting()
     {
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             Debug.Log("h1");
@@ -181,6 +190,7 @@ public class FarmInteraction : MonoBehaviour
             PlantedCrop crop = _tile.PlantedCrop;
             if(crop != null)
                 crop.RequestHarvest();
+            _holdTimer = 0;
             return;
         }
 
@@ -194,8 +204,10 @@ public class FarmInteraction : MonoBehaviour
                 if (crop != null)
                     crop.RequestHarvest();
             }
+            _holdTimer = 0;
             return;
         }
+        _holdTimer += Time.deltaTime;
     }
 
     void Sliderhandler()
