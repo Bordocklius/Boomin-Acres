@@ -40,7 +40,7 @@ public class PlayerConfigurationManager : MonoBehaviour
         _playerConfigs[index].IsReady = true;
         if (/*_playerConfigs.Count == maxPlayers &&*/ _playerConfigs.All(p => p.IsReady == true))
         {
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("Ezra");
         }
         Debug.Log($"player {index} ready!");
     }
