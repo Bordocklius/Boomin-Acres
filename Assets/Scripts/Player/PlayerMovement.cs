@@ -42,12 +42,13 @@ public class PlayerMovement : MonoBehaviour
             _emission.enabled = false; // when stopped
             _animator.SetBool("IsWalking", false);
         }
-        _animator.SetBool("IsWalking", true);
+        
         Vector3 movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * playerSpeed;
         if (IsPerformingAction) movement = movement / 2;
 
         if(movement.sqrMagnitude > 0.001f)
         {
+            _animator.SetBool("IsWalking", true);
             Quaternion targetRotation = Quaternion.LookRotation(movement, Vector3.up);
             if (IsPerformingAction) transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed / 3 * Time.deltaTime);
             else transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);            
