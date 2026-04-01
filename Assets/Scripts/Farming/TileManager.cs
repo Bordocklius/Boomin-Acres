@@ -45,6 +45,7 @@ public class TileManager : MonoBehaviour
             tile.BombObject = BombObject;
             tile.HasBomb = true;
             tile.gameObject.name = "Tile with mine";
+            BombAmount++;
         }
     }
 }
