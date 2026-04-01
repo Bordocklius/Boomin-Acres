@@ -42,10 +42,16 @@ public class TileManager : MonoBehaviour
         
         foreach(FarmTile tile in randomTiles)
         {
-            tile.BombObject = BombObject;
-            tile.HasBomb = true;
-            tile.gameObject.name = "Tile with mine";
-            BombAmount++;
+            if (BombAmount > MaxBombs)
+                break;
+
+            if(!tile.HasBomb)
+            {
+                tile.BombObject = BombObject;
+                tile.HasBomb = true;
+                tile.gameObject.name = "Tile with mine";
+                BombAmount++;
+            }
         }
     }
 }

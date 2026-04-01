@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 _velocity;
 
+    public bool Bombed;
+
     public bool IsPerformingAction;
     private ParticleSystem.EmissionModule _emission;
 
@@ -55,9 +57,14 @@ public class PlayerMovement : MonoBehaviour
         {
             _velocity.y += Physics.gravity.y * Time.deltaTime;
         }
-        else _velocity.y = 0f;
+        else
+        {
+            Bombed = false;
+            _velocity.y = 0f;
+        }
 
         Vector3 XZVelocity = new Vector3(transform.forward.x, 0, transform.forward.z) * movement.magnitude;
+        if (Bombed) XZVelocity = _velocity;
         _velocity = new Vector3(XZVelocity.x, _velocity.y, XZVelocity.z);
         _emission.enabled = true;  // when moving       
 
@@ -78,8 +85,8 @@ public class PlayerMovement : MonoBehaviour
         _movementInput = obj.ReadValue<Vector2>();
     }
 
-    public void AddVelocity(Vector3 veloity)
+    public void AddVelocity(Vector3 velocity)
     {
-        _velocity += veloity;
+        _velocity += velocity;
     }
 }
