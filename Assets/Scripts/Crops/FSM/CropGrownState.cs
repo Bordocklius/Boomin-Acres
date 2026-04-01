@@ -11,6 +11,11 @@ public partial class PlantedCrop
     {
         public CropGrownState(CropFSM fsm) : base(fsm) { }
 
+        public override void OnEnter()
+        {
+            Context.PlayGrownParticles(true);
+        }
+
         public override void HarvestCrop()
         {
             Context.Harvest();
