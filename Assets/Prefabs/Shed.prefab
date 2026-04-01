@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SwapShed
   defaultShed: {fileID: 8741259362999083646}
-  playerShed: {fileID: 568373848897121368}
+  openShed: {fileID: 568373848897121368}
 --- !u!1 &1951031341168086452
 GameObject:
   m_ObjectHideFlags: 0

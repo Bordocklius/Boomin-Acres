@@ -26,7 +26,7 @@ public class CropsUIManager : MonoBehaviour
         switch (cropName)
         {
             case "mais":
-                _maisText.text = $"Mais: {cropAmount}";
+                _maisText.text = $"{cropAmount}";
                 break;
 
             default:
