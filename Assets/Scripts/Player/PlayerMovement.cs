@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private ParticleSystem _movementParticles;
 
     private PlayerConfiguration _configuration;
-    private InputAction _movementAction;
+    //private InputAction _movementAction;
     private Vector2 _movementInput;
 
     public bool IsPerformingAction;
@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        _movementAction = playerInput.currentActionMap.FindAction("Move");
+        //_movementAction = playerInput.currentActionMap.FindAction("Move");
         _emission = _movementParticles.emission;
     }
 
