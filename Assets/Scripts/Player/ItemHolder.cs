@@ -77,7 +77,7 @@ public class ItemHolder : MonoBehaviour
         {
             _tool.transform.parent = null;
             _tool.GetComponent<Rigidbody>().isKinematic = false;
-            _tool.GetComponent<Rigidbody>().AddForce(transform.forward + transform.up * 2, ForceMode.Impulse);
+            _tool.GetComponent<Rigidbody>().AddForce(transform.forward + transform.up * 5, ForceMode.Impulse);
             _tool = null;
             _heldSeedIdentifier = null;
             FarmInteraction.Mode = InteractionMode.Idle;
