@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.17
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.127
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.357
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
       propertyPath: m_LocalRotation.w
@@ -60,9 +60,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: -6144583067338325042, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
       propertyPath: m_Name
       value: Plow
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416272007918961125, guid: c50a2bc05d856114380c2c42d75ec287, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

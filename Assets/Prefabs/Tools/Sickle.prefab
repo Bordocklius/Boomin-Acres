@@ -62,7 +62,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 82c857b75418e3d45a3f433f1c8e2856, type: 3}
       propertyPath: m_Name
-      value: Scythe
+      value: Sickle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 82c857b75418e3d45a3f433f1c8e2856, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
