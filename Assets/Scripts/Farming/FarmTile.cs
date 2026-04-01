@@ -42,7 +42,7 @@ public class FarmTile : MonoBehaviour
         _timer += Time.deltaTime;
         if (_timer > WateringTimer)
         {
-            IsWatered = false;
+            DryOutPlot();
         }
     }
 
@@ -59,6 +59,12 @@ public class FarmTile : MonoBehaviour
         IsWatered = true;
         renderer.material = materialStates[2];
         _timer = 0f;
+    }
+
+    private void DryOutPlot()
+    {
+        IsWatered = false;
+        renderer.material = materialStates[1];
     }
 
     public void ResetPlot()

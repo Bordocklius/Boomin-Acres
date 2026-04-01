@@ -167,4 +167,4 @@ MonoBehaviour:
   renderer: {fileID: 6180874050955788679}
   plantSpawnPoint: {fileID: 7038884394277672127}
   CropObject: {fileID: 733097345280123400, guid: d17c4c174c55e15499f3e18bb57cd2d2, type: 3}
-  WateringTimer: 10
+  WateringTimer: 15
