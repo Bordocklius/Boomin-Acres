@@ -421,7 +421,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmInteraction
   _progressSlider: {fileID: 7873922698744663064}
-  input: {fileID: 0}
   holdInterval: 0.5
   movement: {fileID: 4678769367644989201}
   Mode: 0
@@ -438,7 +437,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a76905d95c9d8d4aad56fef58477a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemHolder
-  input: {fileID: 0}
   holdPoint: {fileID: 3168491874674815327}
   collider: {fileID: 6952285013291587560}
   toolLayer:
@@ -904,6 +902,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Farmer
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 257f3f448c933324bbd19242ac9d6644, type: 2}
     - target: {fileID: 7401621017225146365, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
