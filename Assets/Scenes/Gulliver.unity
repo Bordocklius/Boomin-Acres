@@ -5219,6 +5219,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}
+      propertyPath: lengthInSec
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}
       propertyPath: ColorModule.enabled
       value: 1
       objectReference: {fileID: 0}
