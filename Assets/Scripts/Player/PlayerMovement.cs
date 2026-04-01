@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     //private InputAction _movementAction;
     private Vector2 _movementInput;
 
+    private Vector3 _velocity;
+
     public bool IsPerformingAction;
     private ParticleSystem.EmissionModule _emission;
 
@@ -35,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
         if (_movementInput == Vector2.zero)
         {
             _emission.enabled = false; // when stopped
-            return;
         }
 
         Vector3 movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * playerSpeed;
@@ -50,13 +51,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (!controller.isGrounded)
         {
-            movement += Physics.gravity;
+            _velocity.y += Physics.gravity.y * Time.deltaTime;
         }
+        else _velocity.y = 0f;
 
+        Vector3 XZVelocity = new Vector3(transform.forward.x, 0, transform.forward.z) * movement.magnitude;
+        _velocity = new Vector3(XZVelocity.x, _velocity.y, XZVelocity.z);
         _emission.enabled = true;  // when moving       
 
         //_movementParticles.Play();
-        controller.Move(new Vector3(transform.forward.x, movement.y, transform.forward.z) * movement.magnitude * Time.deltaTime);
+        controller.Move(_velocity * Time.deltaTime);
     }
 
     public void InitializePlayer(PlayerConfiguration pc)
@@ -70,5 +74,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (obj.action != _configuration.Input.currentActionMap.FindAction("Move")) return;
         _movementInput = obj.ReadValue<Vector2>();
+    }
+
+    public void AddVelocity(Vector3 veloity)
+    {
+        _velocity += veloity;
     }
 }
