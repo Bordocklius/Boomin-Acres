@@ -9,8 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("movement variables")]
     [SerializeField] private float playerSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private ParticleSystem _movementParticles;
 
     private InputAction _movementAction;
+    private Vector2 _movementInput;
 
     public bool IsPerformingAction;
 
@@ -21,27 +23,36 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (_movementAction == null) return;
+        HandleMovement();
+    }
 
-        Vector2 newInput = _movementAction.ReadValue<Vector2>();
-        Vector3 moveVelocity = new Vector3(newInput.x, 0f, newInput.y) * playerSpeed;
-        if (IsPerformingAction) moveVelocity = moveVelocity / 2;
+    private void HandleMovement()
+    {
+        if (_movementInput == Vector2.zero)
+            return;
 
-        // Rotate to face movement direction
-        if (moveVelocity.magnitude > 0.01f) // Only if actually moving
+        Vector3 movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * playerSpeed;
+        if (IsPerformingAction) movement = movement / 2;
+
+        if(movement.sqrMagnitude > 0.001f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveVelocity, Vector3.up);
+            Quaternion targetRotation = Quaternion.LookRotation(movement, Vector3.up);
             if (IsPerformingAction) transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed / 3 * Time.deltaTime);
             else transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            
         }
-
-        Vector3 XZMovement = moveVelocity;
 
         if (!controller.isGrounded)
         {
-            moveVelocity += Physics.gravity;
+            movement += Physics.gravity;
         }
 
-        controller.Move(new Vector3(transform.forward.x, moveVelocity.y, transform.forward.z) * XZMovement.magnitude * Time.deltaTime);
+        _movementParticles.Play();
+        controller.Move(new Vector3(transform.forward.x, movement.y, transform.forward.z) * movement.magnitude * Time.deltaTime);
+    }
+
+    public void OnMove(InputValue value)
+    {
+        _movementInput = value.Get<Vector2>();
     }
 }
