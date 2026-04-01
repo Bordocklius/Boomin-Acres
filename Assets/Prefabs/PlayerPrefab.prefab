@@ -306,7 +306,6 @@ GameObject:
   - component: {fileID: 4496901358411019070}
   - component: {fileID: 8841860128146948635}
   - component: {fileID: 6952285013291587560}
-  - component: {fileID: 6640887851862822548}
   - component: {fileID: 4678769367644989201}
   - component: {fileID: 8442996834669274620}
   - component: {fileID: 5833871816832101218}
@@ -391,36 +390,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: -0.5, z: 1}
---- !u!114 &6640887851862822548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5662303090255242290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &4678769367644989201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,8 +402,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14511aeaba670ea4894a95479ff169a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  playerInput: {fileID: 6640887851862822548}
   controller: {fileID: 8841860128146948635}
+  renderer: {fileID: 8845562023367079950}
   playerSpeed: 5
   rotationSpeed: 20
   _movementParticles: {fileID: 6445500224794954213}
@@ -452,7 +421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmInteraction
   _progressSlider: {fileID: 7873922698744663064}
-  input: {fileID: 6640887851862822548}
+  input: {fileID: 0}
   holdInterval: 0.5
   movement: {fileID: 4678769367644989201}
   Mode: 0
@@ -469,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a76905d95c9d8d4aad56fef58477a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemHolder
-  input: {fileID: 6640887851862822548}
+  input: {fileID: 0}
   holdPoint: {fileID: 3168491874674815327}
   collider: {fileID: 6952285013291587560}
   toolLayer:
@@ -930,6 +899,11 @@ PrefabInstance:
 --- !u!4 &2016717285288488984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
+  m_PrefabInstance: {fileID: 2050941935304038387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8845562023367079950 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7401621017225146365, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
   m_PrefabInstance: {fileID: 2050941935304038387}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6005268142865774475

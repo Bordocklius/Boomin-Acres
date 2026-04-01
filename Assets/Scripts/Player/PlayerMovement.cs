@@ -3,15 +3,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerInput playerInput;
+    [Header("Player variables")]
     [SerializeField] private CharacterController controller;
+    [SerializeField] private Renderer renderer;
 
     [Header("movement variables")]
     [SerializeField] private float playerSpeed;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private ParticleSystem _movementParticles;
 
-    private InputAction _movementAction;
+    private PlayerConfiguration _configuration;
+    //private InputAction _movementAction;
     private Vector2 _movementInput;
 
     public bool IsPerformingAction;
@@ -19,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        _movementAction = playerInput.currentActionMap.FindAction("Move");
+        //_movementAction = playerInput.currentActionMap.FindAction("Move");
         _emission = _movementParticles.emission;
     }
 
@@ -57,8 +59,16 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(new Vector3(transform.forward.x, movement.y, transform.forward.z) * movement.magnitude * Time.deltaTime);
     }
 
-    public void OnMove(InputValue value)
+    public void InitializePlayer(PlayerConfiguration pc)
     {
-        _movementInput = value.Get<Vector2>();
+        _configuration = pc;
+        renderer.material = pc.PlayerMaterial;
+        _configuration.Input.onActionTriggered += Input_onActionTriggered1;
+    }
+
+    private void Input_onActionTriggered1(InputAction.CallbackContext obj)
+    {
+        if (obj.action != _configuration.Input.currentActionMap.FindAction("Move")) return;
+        _movementInput = obj.ReadValue<Vector2>();
     }
 }

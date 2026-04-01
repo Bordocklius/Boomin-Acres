@@ -14,7 +14,6 @@ public enum InteractionMode
 public class FarmInteraction : MonoBehaviour
 {
     [SerializeField] private Slider _progressSlider;
-    [SerializeField] private PlayerInput input;
     [SerializeField] private float holdInterval = 0.5f;
     [SerializeField] private PlayerMovement movement;
 
@@ -22,6 +21,7 @@ public class FarmInteraction : MonoBehaviour
 
     private InputAction _action;
     private ItemHolder _itemHolder;
+    private PlayerConfiguration _configuration;
 
     private FarmTile _tile;
     [SerializeField] private float _holdTimer;
@@ -29,7 +29,6 @@ public class FarmInteraction : MonoBehaviour
 
     private void Start()
     {
-        _action = input.currentActionMap.FindAction("Interact");
         _itemHolder = GetComponent<ItemHolder>();
         _progressSlider.gameObject.SetActive(false);
     }
@@ -61,6 +60,8 @@ public class FarmInteraction : MonoBehaviour
 
     void Update()
     {
+        if (_action == null) return;
+
         _action.started += _ => held = true;
         _action.canceled += _ => held = false;
 
@@ -210,31 +211,19 @@ public class FarmInteraction : MonoBehaviour
         _holdTimer += Time.deltaTime;
     }
 
-    void Sliderhandler()
+    public void InitializePlayer(PlayerConfiguration pc)
     {
-        if (Mode == InteractionMode.Idle) return;
+        _configuration = pc;
+        _configuration.Input.onActionTriggered += Input_onActionTriggered1;
+    }
 
-        if (held && _holdTimer >= holdInterval)
+    private void Input_onActionTriggered1(InputAction.CallbackContext obj)
+    {
         {
-            movement.IsPerformingAction = true;
-            _progressSlider.gameObject.SetActive(false); 
-
-            return;
-        }
-
-        if (held && _holdTimer < holdInterval)
-        {
-            if (_holdTimer > 0.1f)
+            if (obj.action.name == "Interact" && _action == null)
             {
-                _progressSlider.gameObject.SetActive(true);
+                _action = obj.action;
             }
-            _progressSlider.value = _holdTimer / holdInterval;
-            _holdTimer += Time.deltaTime;
-            return;
         }
-
-        movement.IsPerformingAction = false;
-        _progressSlider.gameObject.SetActive(false);
-        _holdTimer = 0;
     }
 }
