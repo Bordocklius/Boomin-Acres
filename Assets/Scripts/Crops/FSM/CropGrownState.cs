@@ -11,11 +11,6 @@ public partial class PlantedCrop
     {
         public CropGrownState(CropFSM fsm) : base(fsm) { }
 
-        public override void OnEnter()
-        {
-            Context.RequestHarvest();
-        }
-
         public override void HarvestCrop()
         {
             Context.Harvest();

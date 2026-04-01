@@ -81,6 +81,7 @@ public partial class PlantedCrop : MonoBehaviour
     {
         int cropyield = UnityEngine.Random.Range(CropData.CropYieldMin, CropData.CropYieldMax);
         CropManager.Instance.AddHarvestedCrop(CropData.name, cropyield);
+        Destroy(this.gameObject);
     }
 
     private void ParentFarmTile_WaterSwitched(object sender, EventArgs e)
@@ -94,7 +95,6 @@ public partial class PlantedCrop : MonoBehaviour
         {
             GrowthMultiplier = 1f;
         }
-
         
     }
 }

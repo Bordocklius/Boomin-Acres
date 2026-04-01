@@ -175,6 +175,9 @@ public class FarmInteraction : MonoBehaviour
         {
             Debug.Log("h1");
             _tile.ResetPlot();
+            PlantedCrop crop = _tile.PlantedCrop;
+            if(crop != null)
+                crop.RequestHarvest();
             return;
         }
 
@@ -184,6 +187,9 @@ public class FarmInteraction : MonoBehaviour
             {
                 Debug.Log("h2");
                 _tile.ResetPlot();
+                PlantedCrop crop = _tile.PlantedCrop;
+                if (crop != null)
+                    crop.RequestHarvest();
             }
             _holdTimer = 0;
             return;
