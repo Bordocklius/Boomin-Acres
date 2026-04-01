@@ -942,7 +942,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}
       propertyPath: looping
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}
       propertyPath: InitialModule.startSize.scalar
