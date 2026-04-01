@@ -436,6 +436,7 @@ MonoBehaviour:
   controller: {fileID: 8841860128146948635}
   playerSpeed: 5
   rotationSpeed: 20
+  IsPerformingAction: 0
 --- !u!114 &8442996834669274620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +452,7 @@ MonoBehaviour:
   _progressSlider: {fileID: 7873922698744663064}
   input: {fileID: 6640887851862822548}
   holdInterval: 0.5
+  movement: {fileID: 4678769367644989201}
   Mode: 0
   _holdTimer: 0
 --- !u!114 &5833871816832101218
