@@ -460,6 +460,7 @@ MonoBehaviour:
   movement: {fileID: 4678769367644989201}
   Mode: 0
   _holdTimer: 0
+  _animator: {fileID: 5556594745519598178}
 --- !u!114 &5833871816832101218
 MonoBehaviour:
   m_ObjectHideFlags: 0

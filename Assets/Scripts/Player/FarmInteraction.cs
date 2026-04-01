@@ -89,19 +89,29 @@ public class FarmInteraction : MonoBehaviour
                 break;
             case InteractionMode.Plowing:
                 Plowing();
+                TriggerAnimation();
                 break;
             case InteractionMode.Planting:
                 Planting();
+                TriggerAnimation();
                 break;
             case InteractionMode.Watering:
                 Watering();
+                TriggerAnimation();
                 break;
             case InteractionMode.Harvesting:
                 Harvesting();
+                TriggerAnimation();
                 break;
         }
     }
 
+    [SerializeField] private Animator _animator;
+
+    void TriggerAnimation()
+    {
+        _animator.SetTrigger("UseTool");
+    }
     void Plowing()
     {
         if (_tile.IsPlowed) return; 
