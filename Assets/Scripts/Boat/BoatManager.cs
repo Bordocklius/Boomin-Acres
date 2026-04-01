@@ -32,6 +32,7 @@ public class BoatManager : MonoBehaviour
     private string currentRequiredCrop;
     private int currentFilledSlots = 0;
     private bool playerInZone = false;
+    public int PlayersInZone = 0;
 
     private enum BoatState { Coming, Waiting, Leaving, Gone }
     [SerializeField] private BoatState currentState = BoatState.Gone;
@@ -62,6 +63,25 @@ public class BoatManager : MonoBehaviour
     public void SetPlayerInZone(bool inZone)
     {
         playerInZone = inZone;
+    }
+
+    public void AddPlayerToZone()
+    {
+        PlayersInZone++;
+        playerInZone = PlayersInZone > 0;
+    }
+
+    public void RemovePlayerFromZone()
+    {
+        PlayersInZone = Mathf.Max(0, PlayersInZone - 1);
+        playerInZone = PlayersInZone > 0;
+    }
+
+    private float GetAdjustedTimePerItem()
+    {
+        if (PlayersInZone <= 1) 
+            return timePerItem;
+        return timePerItem / PlayersInZone;
     }
 
     IEnumerator BoatRoutine()
@@ -96,15 +116,13 @@ public class BoatManager : MonoBehaviour
             currentState = BoatState.Waiting;
             while (currentFilledSlots < totalSlots)
             {
-                // Check via de Singleton van CropManager
                 if (playerInZone && CropManager.Instance != null)
                 {
-                    // Gebruik TryRemoveHarvestedCrop van je CropManager
                     if (CropManager.Instance.TryRemoveHarvestedCrop(currentRequiredCrop, 1))
                     {
                         SpawnFlyingItem();
                         currentFilledSlots++;
-                        yield return new WaitForSeconds(timePerItem);
+                        yield return new WaitForSeconds(GetAdjustedTimePerItem());
                     }
                 }
                 yield return null;
