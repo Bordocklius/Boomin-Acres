@@ -1,7 +1,6 @@
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public enum InteractionMode
 {
@@ -14,6 +13,7 @@ public enum InteractionMode
 
 public class FarmInteraction : MonoBehaviour
 {
+    [SerializeField] private Slider _progressSlider;
     [SerializeField] private PlayerInput input;
     [SerializeField] private float holdInterval = 0.5f;
 
@@ -23,13 +23,14 @@ public class FarmInteraction : MonoBehaviour
     private ItemHolder _itemHolder;
 
     private FarmTile _tile;
-    private float _holdTimer;
+    [SerializeField] private float _holdTimer;
     private bool held;
 
     private void Start()
     {
         _action = input.currentActionMap.FindAction("Interact");
         _itemHolder = GetComponent<ItemHolder>();
+        _progressSlider.gameObject.SetActive(false);
     }
 
     //detecting tiles
@@ -61,11 +62,8 @@ public class FarmInteraction : MonoBehaviour
     {
         _action.started += _ => held = true;
         _action.canceled += _ => held = false;
-        
-        if (held && _holdTimer < holdInterval)
-        {
-            _holdTimer += Time.deltaTime;
-        }
+
+        Sliderhandler();
 
         //determine what action is used
         if (_tile != null)
@@ -106,7 +104,6 @@ public class FarmInteraction : MonoBehaviour
                 Debug.Log("p2");
                 _tile.PlowPlot();
             }
-            _holdTimer = 0;
             return;
         }
     }
@@ -143,7 +140,6 @@ public class FarmInteraction : MonoBehaviour
                     }
                 }
             }
-            _holdTimer = 0;
             return;
         }
     }
@@ -164,7 +160,6 @@ public class FarmInteraction : MonoBehaviour
                 Debug.Log("w2");
                 _tile.WaterPlot();
             }
-            _holdTimer = 0;
             return;
         }
     }
@@ -191,8 +186,32 @@ public class FarmInteraction : MonoBehaviour
                 if (crop != null)
                     crop.RequestHarvest();
             }
-            _holdTimer = 0;
             return;
         }
+    }
+
+    void Sliderhandler()
+    {
+        if (Mode == InteractionMode.Idle) return;
+
+        if (held && _holdTimer >= holdInterval)
+        {
+            _progressSlider.gameObject.SetActive(false); 
+            return;
+        }
+
+        if (held && _holdTimer < holdInterval)
+        {
+            if (_holdTimer > 0.1f)
+            {
+                _progressSlider.gameObject.SetActive(true);
+            }
+            _progressSlider.value = _holdTimer / holdInterval;
+            _holdTimer += Time.deltaTime;
+            return;
+        }
+
+        _progressSlider.gameObject.SetActive(false);
+        _holdTimer = 0;
     }
 }
