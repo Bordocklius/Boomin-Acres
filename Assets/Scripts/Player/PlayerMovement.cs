@@ -15,10 +15,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _movementInput;
 
     public bool IsPerformingAction;
+    private ParticleSystem.EmissionModule _emission;
 
     void Start()
     {
-        _movementAction = playerInput.currentActionMap.FindAction("Move"); 
+        _movementAction = playerInput.currentActionMap.FindAction("Move");
+        _emission = _movementParticles.emission;
     }
 
     void Update()
@@ -29,7 +31,10 @@ public class PlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         if (_movementInput == Vector2.zero)
+        {
+            _emission.enabled = false; // when stopped
             return;
+        }
 
         Vector3 movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * playerSpeed;
         if (IsPerformingAction) movement = movement / 2;
@@ -46,7 +51,9 @@ public class PlayerMovement : MonoBehaviour
             movement += Physics.gravity;
         }
 
-        _movementParticles.Play();
+        _emission.enabled = true;  // when moving       
+
+        //_movementParticles.Play();
         controller.Move(new Vector3(transform.forward.x, movement.y, transform.forward.z) * movement.magnitude * Time.deltaTime);
     }
 
