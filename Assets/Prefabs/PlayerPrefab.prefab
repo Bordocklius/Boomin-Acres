@@ -493,6 +493,7 @@ GameObject:
   - component: {fileID: 6767778893173749422}
   - component: {fileID: 9167644709933098935}
   - component: {fileID: 1746451414072792417}
+  - component: {fileID: 7703462338708658104}
   m_Layer: 5
   m_Name: ProgressUI
   m_TagString: Untagged
@@ -583,6 +584,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7703462338708658104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114025341064468471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a83f38d6711c774e8dc8cd30d16bc29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldSpaceUIHandler
 --- !u!1 &7729838701132351837
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SK_Farmer
       objectReference: {fileID: 0}
+    - target: {fileID: 7401621017225146365, guid: 86a3a6ab0e4b2c245b7c8cd4f4df6743, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 7d41be61684ffe840a446a9bbb502cba, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -916,6 +933,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}
       propertyPath: looping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}
+      propertyPath: moveWithTransform
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 731267320980274798, guid: adeefc90d430b904c91a87fdd08a3806, type: 3}

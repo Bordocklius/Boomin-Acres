@@ -19,6 +19,11 @@ public partial class PlantedCrop
             }
         }
 
+        public override void OnEnter()
+        {
+            Context.PlayGrownParticles(false);
+        }
+
         public override void OnExit()
         {
             TransitionToStage();

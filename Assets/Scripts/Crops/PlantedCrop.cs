@@ -23,6 +23,7 @@ public partial class PlantedCrop : MonoBehaviour
 
     [Space(10), Header("Particles effects")]
     [SerializeField] private VisualEffect _poofEffect;
+    [SerializeField] private VisualEffect _starEffect;
 
     private void Start()
     {
@@ -75,7 +76,6 @@ public partial class PlantedCrop : MonoBehaviour
         if(stage > 0)
             _cropObjects[stage - 1].SetActive(false);
         _cropObjects[stage].SetActive(true);
-        _poofEffect.Play();
     }
 
     public void RequestHarvest()
@@ -103,5 +103,12 @@ public partial class PlantedCrop : MonoBehaviour
             GrowthMultiplier = 1f;
         }
         
+    }
+
+    private void PlayGrownParticles(bool playStars)
+    {
+        _poofEffect.Play();
+        if(playStars)
+            _starEffect.Play();
     }
 }
