@@ -1398,6 +1398,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CropManager
   availableCrops:
   - {fileID: 11400000, guid: e88f42dc9816e284bb47cc76529b04e1, type: 2}
+  - {fileID: 11400000, guid: b537135d4e0084d4abf65b5389425757, type: 2}
+  - {fileID: 11400000, guid: ccced8d4532b1604aa6cde77368c3add, type: 2}
+  - {fileID: 11400000, guid: b92ab11572c30a64a96915ceedb52bb2, type: 2}
 --- !u!4 &511363247
 Transform:
   m_ObjectHideFlags: 0
@@ -1744,6 +1747,12 @@ MonoBehaviour:
   speed: 5
   allCropVisuals:
   - cropName: Mais
+    cropPrefab: {fileID: 919132149155446097, guid: 3b1c9e37f75dd3240ae91a85d5d4ff7d, type: 3}
+  - cropName: Carrot
+    cropPrefab: {fileID: 919132149155446097, guid: 3b1c9e37f75dd3240ae91a85d5d4ff7d, type: 3}
+  - cropName: Pumpkin
+    cropPrefab: {fileID: 919132149155446097, guid: 3b1c9e37f75dd3240ae91a85d5d4ff7d, type: 3}
+  - cropName: Potato
     cropPrefab: {fileID: 919132149155446097, guid: 3b1c9e37f75dd3240ae91a85d5d4ff7d, type: 3}
   playerBackpack: {fileID: 0}
   totalSlots: 5
