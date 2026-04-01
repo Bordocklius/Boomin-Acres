@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private ParticleSystem _movementParticles;
+    [SerializeField] private Animator _animator;
 
     private PlayerConfiguration _configuration;
     //private InputAction _movementAction;
@@ -37,8 +38,9 @@ public class PlayerMovement : MonoBehaviour
         if (_movementInput == Vector2.zero)
         {
             _emission.enabled = false; // when stopped
+            _animator.SetBool("IsWalking", false);
         }
-
+        _animator.SetBool("IsWalking", true);
         Vector3 movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * playerSpeed;
         if (IsPerformingAction) movement = movement / 2;
 
