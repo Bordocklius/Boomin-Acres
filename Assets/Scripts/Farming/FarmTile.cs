@@ -17,6 +17,9 @@ public class FarmTile : MonoBehaviour
     public bool IsPlowed { get; private set; }
     public bool IsWatered { get; private set; }
 
+    public bool HasBomb { get; set; }
+    public GameObject BombObject;
+
     private float _timer;
     public float WateringTimer = 10f;
 
