@@ -3,39 +3,91 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerInput playerInput;
+    [Header("Player variables")]
     [SerializeField] private CharacterController controller;
+    [SerializeField] private Renderer renderer;
 
     [Header("movement variables")]
     [SerializeField] private float playerSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField] private ParticleSystem _movementParticles;
+    [SerializeField] private Animator _animator;
 
-    private InputAction _movementAction;
+    private PlayerConfiguration _configuration;
+    //private InputAction _movementAction;
+    private Vector2 _movementInput;
+
+    private Vector3 _velocity;
+
+    public bool Bombed;
+
+    public bool IsPerformingAction;
+    private ParticleSystem.EmissionModule _emission;
 
     void Start()
     {
-        _movementAction = playerInput.currentActionMap.FindAction("Move"); 
+        //_movementAction = playerInput.currentActionMap.FindAction("Move");
+        _emission = _movementParticles.emission;
     }
 
     void Update()
     {
-        if (_movementAction == null) return;
+        HandleMovement();
+    }
 
-        Vector2 newInput = _movementAction.ReadValue<Vector2>();
-        Vector3 moveVelocity = new Vector3(newInput.x, 0f, newInput.y) * playerSpeed;
-
-        // Rotate to face movement direction
-        if (moveVelocity.magnitude > 0.01f) // Only if actually moving
+    private void HandleMovement()
+    {
+        if (_movementInput == Vector2.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveVelocity, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            _emission.enabled = false; // when stopped
+            _animator.SetBool("IsWalking", false);
+        }
+        
+        Vector3 movement = new Vector3(_movementInput.x, 0f, _movementInput.y) * playerSpeed;
+        if (IsPerformingAction) movement = movement / 2;
+
+        if(movement.sqrMagnitude > 0.001f)
+        {
+            _animator.SetBool("IsWalking", true);
+            Quaternion targetRotation = Quaternion.LookRotation(movement, Vector3.up);
+            if (IsPerformingAction) transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed / 3 * Time.deltaTime);
+            else transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);            
         }
 
         if (!controller.isGrounded)
         {
-            moveVelocity += Physics.gravity;
+            _velocity.y += Physics.gravity.y * Time.deltaTime;
+        }
+        else
+        {
+            Bombed = false;
+            _velocity.y = 0f;
         }
 
-        controller.Move(moveVelocity * Time.deltaTime);
+        Vector3 XZVelocity = new Vector3(transform.forward.x, 0, transform.forward.z) * movement.magnitude;
+        if (Bombed) XZVelocity = _velocity;
+        _velocity = new Vector3(XZVelocity.x, _velocity.y, XZVelocity.z);
+        _emission.enabled = true;  // when moving       
+
+        //_movementParticles.Play();
+        controller.Move(_velocity * Time.deltaTime);
+    }
+
+    public void InitializePlayer(PlayerConfiguration pc)
+    {
+        _configuration = pc;
+        renderer.material = pc.PlayerMaterial;
+        _configuration.Input.onActionTriggered += Input_onActionTriggered1;
+    }
+
+    private void Input_onActionTriggered1(InputAction.CallbackContext obj)
+    {
+        if (obj.action != _configuration.Input.currentActionMap.FindAction("Move")) return;
+        _movementInput = obj.ReadValue<Vector2>();
+    }
+
+    public void AddVelocity(Vector3 velocity)
+    {
+        _velocity += velocity;
     }
 }

@@ -6,19 +6,17 @@ public class ZoneTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
         if (other.CompareTag("Player"))
-        {            
-            boatManager.SetPlayerInZone(true);
+        {
+            boatManager.AddPlayerToZone();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Check of de speler de cirkel verlaat
         if (other.CompareTag("Player"))
         {
-            boatManager.SetPlayerInZone(false);
+            boatManager.RemovePlayerFromZone();
         }
     }
 }

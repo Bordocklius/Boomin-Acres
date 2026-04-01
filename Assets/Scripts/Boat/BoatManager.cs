@@ -20,6 +20,10 @@ public class BoatManager : MonoBehaviour
     [Header("Scalable Cargo Visuals")]
     public List<CropVisuals> allCropVisuals;
 
+    [Header("Rewards")]
+    public int goldPerItem = 15;
+    public int scorePerItem = 100;
+
     private Dictionary<string, GameObject> cropPrefabDict = new Dictionary<string, GameObject>();
     private List<string> possibleCrops = new List<string>();
 
@@ -29,9 +33,13 @@ public class BoatManager : MonoBehaviour
     public float timePerItem = 0.8f;
     public float boatRespawnTime = 10f;
 
+    [HideInInspector] public int PlayersInZone = 0;
+    private bool playerInZone = false;
     private string currentRequiredCrop;
     private int currentFilledSlots = 0;
-    private bool playerInZone = false;
+
+    // Boot Type: Wisselt tussen Goud en Score
+    private bool isSellBoat = true;
 
     private enum BoatState { Coming, Waiting, Leaving, Gone }
     [SerializeField] private BoatState currentState = BoatState.Gone;
@@ -46,7 +54,6 @@ public class BoatManager : MonoBehaviour
     {
         cropPrefabDict.Clear();
         possibleCrops.Clear();
-
         foreach (CropVisuals visual in allCropVisuals)
         {
             if (!cropPrefabDict.ContainsKey(visual.cropName))
@@ -57,11 +64,22 @@ public class BoatManager : MonoBehaviour
         }
     }
 
-    // Aangepast: we hebben de CropManager referentie niet meer nodig als parameter
-    // omdat we CropManager.Instance gebruiken.
-    public void SetPlayerInZone(bool inZone)
+    public void AddPlayerToZone()
     {
-        playerInZone = inZone;
+        PlayersInZone++;
+        playerInZone = true;
+    }
+
+    public void RemovePlayerFromZone()
+    {
+        PlayersInZone = Mathf.Max(0, PlayersInZone - 1);
+        playerInZone = PlayersInZone > 0;
+    }
+
+    private float GetAdjustedTimePerItem()
+    {
+        if (PlayersInZone <= 1) return timePerItem;
+        return timePerItem / PlayersInZone;
     }
 
     IEnumerator BoatRoutine()
@@ -73,17 +91,19 @@ public class BoatManager : MonoBehaviour
             transform.position = new Vector3(0, -100, 0);
             yield return new WaitForSeconds(boatRespawnTime);
 
-            if (possibleCrops.Count == 0)
-            {
-                Debug.LogError("Geen crops ingevuld in BoatManager!");
-                yield break;
-            }
+            if (possibleCrops.Count == 0) yield break;
+
+            // LANDMINES GENEREREN (Via jouw TileManager)
+            if (TileManager.Instance != null)
+                TileManager.Instance.GenerateBombs();
 
             currentRequiredCrop = possibleCrops[Random.Range(0, possibleCrops.Count)];
             currentFilledSlots = 0;
-            Debug.Log($"NIEUWE BOOT: Wil graag {totalSlots}x {currentRequiredCrop} hebben!");
 
-            // 2. SPAWN & VAAR NAAR DOK
+            string typeLabel = isSellBoat ? "GOLD BOAT" : "SCORE BOAT";
+            Debug.Log($"NIEUWE BOOT: {typeLabel}. Wil {totalSlots}x {currentRequiredCrop}!");
+
+            // 2. VAAR NAAR DOK
             transform.position = startPoint.position;
             currentState = BoatState.Coming;
             while (Vector3.Distance(transform.position, dockPoint.position) > 0.5f)
@@ -96,15 +116,14 @@ public class BoatManager : MonoBehaviour
             currentState = BoatState.Waiting;
             while (currentFilledSlots < totalSlots)
             {
-                // Check via de Singleton van CropManager
                 if (playerInZone && CropManager.Instance != null)
                 {
-                    // Gebruik TryRemoveHarvestedCrop van je CropManager
                     if (CropManager.Instance.TryRemoveHarvestedCrop(currentRequiredCrop, 1))
                     {
                         SpawnFlyingItem();
+                        GiveReward(); // Geef goud OF score
                         currentFilledSlots++;
-                        yield return new WaitForSeconds(timePerItem);
+                        yield return new WaitForSeconds(GetAdjustedTimePerItem());
                     }
                 }
                 yield return null;
@@ -113,11 +132,29 @@ public class BoatManager : MonoBehaviour
             // 4. VERTREK
             yield return new WaitForSeconds(1f);
             currentState = BoatState.Leaving;
+
+            // Wissel type voor de volgende boot
+            isSellBoat = !isSellBoat;
+
             while (Vector3.Distance(transform.position, exitPoint.position) > 0.5f)
             {
                 MoveBoat(exitPoint.position);
                 yield return null;
             }
+        }
+    }
+
+    void GiveReward()
+    {
+        if (isSellBoat)
+        {
+            if (ShopManager.Instance != null)
+                ShopManager.Instance.currentGold += goldPerItem;
+        }
+        else
+        {
+            // Voeg hier je Score-logica toe
+            Debug.Log($"+{scorePerItem} Score!");
         }
     }
 

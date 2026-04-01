@@ -1,7 +1,6 @@
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public enum InteractionMode
 {
@@ -14,22 +13,24 @@ public enum InteractionMode
 
 public class FarmInteraction : MonoBehaviour
 {
-    [SerializeField] private PlayerInput input;
+    [SerializeField] private Slider _progressSlider;
     [SerializeField] private float holdInterval = 0.5f;
+    [SerializeField] private PlayerMovement movement;
 
     public InteractionMode Mode = InteractionMode.Idle;
 
     private InputAction _action;
     private ItemHolder _itemHolder;
+    private PlayerConfiguration _configuration;
 
     private FarmTile _tile;
-    private float _holdTimer;
+    [SerializeField] private float _holdTimer;
     private bool held;
 
     private void Start()
     {
-        _action = input.currentActionMap.FindAction("Interact");
         _itemHolder = GetComponent<ItemHolder>();
+        _progressSlider.gameObject.SetActive(false);
     }
 
     //detecting tiles
@@ -59,60 +60,76 @@ public class FarmInteraction : MonoBehaviour
 
     void Update()
     {
+        if (_action == null) return;
+
         _action.started += _ => held = true;
         _action.canceled += _ => held = false;
-        
-        if (held && _holdTimer < holdInterval)
-        {
-            _holdTimer += Time.deltaTime;
-        }
+
+        movement.IsPerformingAction = held;
 
         //determine what action is used
-        if (_tile != null)
+        if (_tile == null)
         {
-            switch (Mode)
-            {
-                case InteractionMode.Idle:
-                    break;
-                case InteractionMode.Plowing:
-                    Plowing();
-                    break;
-                case InteractionMode.Planting:
-                    Planting();
-                    break;
-                case InteractionMode.Watering:
-                    Watering();
-                    break;
-                case InteractionMode.Harvesting:
-                    Harvesting();
-                    break;
-            }
+            _progressSlider.gameObject.SetActive(false);
+            return;
+        }
+
+        if (!held) 
+        {
+            _holdTimer = 0;
+            _progressSlider.gameObject.SetActive(false);
+            return;
+        }
+
+        _progressSlider.gameObject.SetActive(true);
+
+        switch (Mode)
+        {
+            case InteractionMode.Idle:
+                break;
+            case InteractionMode.Plowing:
+                Plowing();
+                TriggerAnimation();
+                break;
+            case InteractionMode.Planting:
+                Planting();
+                TriggerAnimation();
+                break;
+            case InteractionMode.Watering:
+                Watering();
+                TriggerAnimation();
+                break;
+            case InteractionMode.Harvesting:
+                Harvesting();
+                TriggerAnimation();
+                break;
         }
     }
 
+    [SerializeField] private Animator _animator;
+
+    void TriggerAnimation()
+    {
+        _animator.SetTrigger("UseTool");
+    }
     void Plowing()
     {
+        if (_tile.IsPlowed) return; 
+
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             Debug.Log("p1");
             _tile.PlowPlot();
-            return;
-        }
-
-        if (_action.WasReleasedThisFrame())
-        {
-            if (_holdTimer < holdInterval)
-            {
-                Debug.Log("p2");
-                _tile.PlowPlot();
-            }
             _holdTimer = 0;
             return;
         }
+        _holdTimer += Time.deltaTime;
     }
 
     void Planting()
     {
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             SeedIdentifier seedIdentifier = _itemHolder.GetHeldSeedIdentifier();
@@ -125,6 +142,7 @@ public class FarmInteraction : MonoBehaviour
                     Debug.Log($"Planted {seedIdentifier.CropName}");
                 }
             }
+            _holdTimer = 0;
             return;
         }
 
@@ -146,14 +164,17 @@ public class FarmInteraction : MonoBehaviour
             _holdTimer = 0;
             return;
         }
+        _holdTimer += Time.deltaTime;
     }
 
     void Watering()
     {
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             Debug.Log("w1");
             _tile.WaterPlot();
+            _holdTimer = 0;
             return;
         }
 
@@ -167,10 +188,12 @@ public class FarmInteraction : MonoBehaviour
             _holdTimer = 0;
             return;
         }
+        _holdTimer += Time.deltaTime;
     }
 
     void Harvesting()
     {
+        _progressSlider.value = _holdTimer / holdInterval;
         if (held && _holdTimer >= holdInterval)
         {
             Debug.Log("h1");
@@ -178,6 +201,7 @@ public class FarmInteraction : MonoBehaviour
             PlantedCrop crop = _tile.PlantedCrop;
             if(crop != null)
                 crop.RequestHarvest();
+            _holdTimer = 0;
             return;
         }
 
@@ -193,6 +217,23 @@ public class FarmInteraction : MonoBehaviour
             }
             _holdTimer = 0;
             return;
+        }
+        _holdTimer += Time.deltaTime;
+    }
+
+    public void InitializePlayer(PlayerConfiguration pc)
+    {
+        _configuration = pc;
+        _configuration.Input.onActionTriggered += Input_onActionTriggered1;
+    }
+
+    private void Input_onActionTriggered1(InputAction.CallbackContext obj)
+    {
+        {
+            if (obj.action.name == "Interact" && _action == null)
+            {
+                _action = obj.action;
+            }
         }
     }
 }

@@ -17,6 +17,9 @@ public class FarmTile : MonoBehaviour
     public bool IsPlowed { get; private set; }
     public bool IsWatered { get; private set; }
 
+    public bool HasBomb { get; set; }
+    public GameObject BombObject;
+
     private float _timer;
     public float WateringTimer = 10f;
 
@@ -42,7 +45,7 @@ public class FarmTile : MonoBehaviour
         _timer += Time.deltaTime;
         if (_timer > WateringTimer)
         {
-            IsWatered = false;
+            DryOutPlot();
         }
     }
 
@@ -59,6 +62,12 @@ public class FarmTile : MonoBehaviour
         IsWatered = true;
         renderer.material = materialStates[2];
         _timer = 0f;
+    }
+
+    private void DryOutPlot()
+    {
+        IsWatered = false;
+        renderer.material = materialStates[1];
     }
 
     public void ResetPlot()

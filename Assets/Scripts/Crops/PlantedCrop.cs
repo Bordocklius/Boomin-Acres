@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public partial class PlantedCrop : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public partial class PlantedCrop : MonoBehaviour
     private List<GameObject> _cropObjects;
 
     private CropFSM _cropFSM;
+
+
+    [Space(10), Header("Particles effects")]
+    [SerializeField] private VisualEffect _poofEffect;
+    [SerializeField] private VisualEffect _starEffect;
 
     private void Start()
     {
@@ -81,6 +87,7 @@ public partial class PlantedCrop : MonoBehaviour
     {
         int cropyield = UnityEngine.Random.Range(CropData.CropYieldMin, CropData.CropYieldMax);
         CropManager.Instance.AddHarvestedCrop(CropData.name, cropyield);
+        CropManager.Instance.GetHarvestedCropAmount(CropData.name);
         Destroy(this.gameObject);
     }
 
@@ -96,5 +103,12 @@ public partial class PlantedCrop : MonoBehaviour
             GrowthMultiplier = 1f;
         }
         
+    }
+
+    private void PlayGrownParticles(bool playStars)
+    {
+        _poofEffect.Play();
+        if(playStars)
+            _starEffect.Play();
     }
 }
