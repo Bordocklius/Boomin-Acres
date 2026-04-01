@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 22017945}
   - component: {fileID: 22017944}
   m_Layer: 5
-  m_Name: Carrot
+  m_Name: Mais
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c9a479618139c4e43b7be6ab8266d10c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e061e808a17553d499c078ec56e3bf3c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1376,6 +1376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 511363247}
   - component: {fileID: 511363246}
+  - component: {fileID: 511363248}
   m_Layer: 0
   m_Name: CropManager
   m_TagString: Untagged
@@ -1412,6 +1413,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &511363248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511363245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74043cb9f0d9c6c4ba2da5e2e3c6037e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CropsUIManager
+  _maisText: {fileID: 318013191}
 --- !u!1001 &511390684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3453,7 +3467,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c9a479618139c4e43b7be6ab8266d10c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 07489c94d73d93b4c96678bcc16dcdb9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4912,7 +4926,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c9a479618139c4e43b7be6ab8266d10c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c12c7bf0a9fbd04daa838bb6f1f4d85, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
