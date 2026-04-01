@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public partial class PlantedCrop : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public partial class PlantedCrop : MonoBehaviour
     private List<GameObject> _cropObjects;
 
     private CropFSM _cropFSM;
+
+
+    [Space(10), Header("Particles effects")]
+    [SerializeField] private VisualEffect _poofEffect;
 
     private void Start()
     {
@@ -70,6 +75,7 @@ public partial class PlantedCrop : MonoBehaviour
         if(stage > 0)
             _cropObjects[stage - 1].SetActive(false);
         _cropObjects[stage].SetActive(true);
+        _poofEffect.Play();
     }
 
     public void RequestHarvest()
