@@ -81,6 +81,7 @@ public partial class PlantedCrop : MonoBehaviour
     {
         int cropyield = UnityEngine.Random.Range(CropData.CropYieldMin, CropData.CropYieldMax);
         CropManager.Instance.AddHarvestedCrop(CropData.name, cropyield);
+        CropManager.Instance.GetHarvestedCropAmount(CropData.name);
         Destroy(this.gameObject);
     }
 
